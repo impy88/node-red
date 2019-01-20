@@ -45,6 +45,7 @@ module.exports = function(RED) {
             var preRequestTimestamp = process.hrtime();
             node.status({fill:"blue",shape:"dot",text:"httpin.status.requesting"});
             var url = nodeUrl || msg.url;
+
             if (msg.url && nodeUrl && (nodeUrl !== msg.url)) {  // revert change below when warning is finally removed
                 node.warn(RED._("common.errors.nooverride"));
             }
@@ -182,6 +183,11 @@ module.exports = function(RED) {
                     if (url.indexOf(noprox[i]) !== -1) { noproxy=true; }
                 }
             }
+
+            if (msg.customProxy) {
+                prox = msg.customProxy;
+            }
+
             if (prox && !noproxy) {
                 var match = prox.match(/^(http:\/\/)?(.+)?:([0-9]+)?/i);
                 if (match) {
@@ -191,6 +197,7 @@ module.exports = function(RED) {
                     opts.proxy = null;
                 }
             }
+
             if (tlsNode) {
                 tlsNode.addTLSOptions(opts);
             } else {
