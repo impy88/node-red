@@ -87,14 +87,6 @@ module.exports = function(RED) {
             var ctSet = "Content-Type"; // set default camel case
             var clSet = "Content-Length";
             if (msg.headers) {
-                if (msg.headers.hasOwnProperty('x-node-red-request-node')) {
-                    var headerHash = msg.headers['x-node-red-request-node'];
-                    delete msg.headers['x-node-red-request-node'];
-                    var hash = hashSum(msg.headers);
-                    if (hash === headerHash) {
-                        delete msg.headers;
-                    }
-                }
                 if (msg.headers) {
                     for (var v in msg.headers) {
                         if (msg.headers.hasOwnProperty(v)) {
@@ -184,7 +176,7 @@ module.exports = function(RED) {
                 }
             }
 
-            if (msg.customProxy) {
+            if (msg.customProxy & msg.customProxy !== "") {
                 prox = msg.customProxy;
             }
 
@@ -234,7 +226,7 @@ module.exports = function(RED) {
                             msg.responseCookies[key] = parsedCookie;
                         });
                     }
-                    msg.headers['x-node-red-request-node'] = hashSum(msg.headers);
+
                     // msg.url = url;   // revert when warning above finally removed
                     if (node.metric()) {
                         // Calculate request time
