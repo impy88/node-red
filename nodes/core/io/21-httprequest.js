@@ -176,7 +176,7 @@ module.exports = function(RED) {
                 }
             }
 
-            if (msg.customProxy & msg.customProxy !== "") {
+            if (msg.customProxy && msg.customProxy !== "") {
                 prox = msg.customProxy;
             }
 
